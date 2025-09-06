@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chats</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #444;
+    }
+    .chat-container {
+      max-width: 600px;
+      margin: 20px auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      
+     
+    }
+    .chat {
+      padding: 12px 15px;
+      border-bottom: 1px solid #eee;
+
+    }
+    .chat:last-child {
+      border-bottom: none;
+    }
+    .from {
+      font-weight: bold;
+      color: #007bff;
+    }
+    .to {
+      font-weight: bold;
+      color: #28a745;
+    }
+    .message {
+      margin: 5px 0;
+      font-size: 1rem;
+    }
+    .time {
+      font-size: 0.8rem;
+      color: gray;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <h1>All Chats</h1>
+
+  <div class="chat-container">
+    <% chats.forEach(chat => { %>
+      <div class="chat">
+        <div><span class="from"><%= chat.from %></span> ➝ <span class="to"><%= chat.to %></span></div>
+        <div class="message"><%= chat.message %></div>
+        <div class="time"><%= chat.created_at.toLocaleString() %></div>
+      </div>
+    <% }) %>
+  </div>
+</body>
+</html>

@@ -23,9 +23,30 @@ const userSchema = new  mongoose.Schema(
 )
 const User = mongoose.model("User" , userSchema );
 
-User.find({
-    age : {$gt : 20}
-}).then(res => (console.log(res[0].name))).catch((err)=> (console.log(err)))
+
+User.findByIdAndDelete({_id : ""}).then()
+
+// User.deleteOne({name : "Sanjoy Deb"})
+// .then((res)=> ( console.log("deleted")))
+
+// User.findByIdAndUpdate(
+//     { _id : "68b9adb460a85c3e69df4175"},
+//     { $set : {age : 21 }},
+//     {new : true}
+// ).then((res)=>{
+//     console.log(res)
+// })
+
+// User.updateOne(
+//   { name : "trisha " }, 
+//   { $set :  {email : "she is good girl"}},
+//   { new: true }
+// ).then(res => console.log(res));
+
+
+// User.find({
+//     age : {$gt : 20}
+// }).then(res => (console.log(res[0].name))).catch((err)=> (console.log(err)))
 
 // User.insertMany([
 //     {
@@ -61,4 +82,6 @@ User.find({
 // }).catch((err)=>{
 //     console.log(err)
 // })
+
+
 
