@@ -67,6 +67,9 @@
         <form action="/chats/<%= chat._id %>/edit ">
           <button>Edit</button>
         </form>
+        <form method="post" action="/chats/<%= chat._id %>/?_method=DELETE ">
+          <button type="submit">Delete</button>
+        </form>
         </div>
         <div class="time"><%= chat.created_at.toLocaleString() %></div>
       </div>

@@ -18,7 +18,7 @@ const chatSchema =new mongoose.Schema({
         required : true
     }
 
-})
+} , {timestamps : true})
 
 const Chat =  mongoose.model("Chat" , chatSchema)
 
