@@ -53,12 +53,21 @@
 </head>
 <body>
   <h1>All Chats</h1>
+  <div>
+    <form method="get" action="/chats/new">
+      <button>New</button>
+    </form>
+  </div>
 
   <div class="chat-container">
     <% chats.forEach(chat => { %>
       <div class="chat">
         <div><span class="from"><%= chat.from %></span> ➝ <span class="to"><%= chat.to %></span></div>
-        <div class="message"><%= chat.message %></div>
+        <div class="message"><%= chat.message %> 
+        <form action="/chats/<%= chat._id %>/edit ">
+          <button>Edit</button>
+        </form>
+        </div>
         <div class="time"><%= chat.created_at.toLocaleString() %></div>
       </div>
     <% }) %>
