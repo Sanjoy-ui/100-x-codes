@@ -9,6 +9,7 @@ const connection = await mysql.createConnection({
 
 const createRandomUser = ()=> {
   return {
+    
     userId: faker.string.uuid(),
     username: faker.internet.username(),
     email: faker.internet.email(),
