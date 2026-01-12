@@ -4,6 +4,7 @@ import { Result } from "postcss";
 
 const router = Router()
 
+// create
 const registerUser = async (req, res) => {
     try {
         const { username, email, age, address } = req.body;
@@ -17,25 +18,60 @@ const registerUser = async (req, res) => {
     }
 }
 
+// read
 const userLogin = async (req ,res) => {
     try {
         const {username , email } = req.body;
         if(!username) return res.status(401).json({message : "username required"})
         if(!email) return res.status(401).json({message : "email required"})
-        const sql = `SELECT * FROM student WHERE email = ? `;
-        await connection.query(sql , [email] , (err, Result)=>{
-            if(err) return res.status(500).json({message : "server error"})
-            console.log(Result)
-            res.status(201).json({message : "login successful" , user : Result[0]})
+        const sql = `SELECT id , username , email FROM student WHERE email = ? `;
+        const [rows]= await connection.query(sql , [email] )
+        if(rows.length === 0) return res.status(404).json({message : "user not found !"})
+        if(rows[0].username !== username) return res.status(404).json({message : "invalid credentials"})
+        res.status(200).json({
+            message : "login successfull",
+            user : rows[0]
         })
     } catch (error) {
         console.log(error)
-        res.status(500).json({ message: "unexpected error" });
+        res.status(500).json({ message: "server login error" });
     }
 }
 
+// update 
+
+const updateUser = async (req,res) => {
+    try {
+        const {id} = req.params;
+        const {name , age } = req.body
+        const sql = `UPDATE student SET username = ? , age = ? WHERE id = ?`;
+         await connection.query(sql , [name , age , id])
+        console.log("updated")
+        res.status(203).json({message : "user updated" })
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message : "server error"})
+    }
+}
+
+// delete 
+const deleteUser = async (req,res) => {
+    try {
+        await connection.query(`DELETE FROM student WHERE id = ?`, [req.params.id])
+        console.log("user deleted")
+        res.status(200).json({ message: "user deleted" })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "delete error" })
+    }
+}
+
+ // "email": "rahul@test.com"
 router.route("/signup").post(registerUser)
 router.route("/login").get(userLogin)
+router.route("/update/:id").put(updateUser)
+router.route("/delete/:id").delete(deleteUser)
 // router.route("/signup").post(middleware ,(req,res)=>{
 
 // })

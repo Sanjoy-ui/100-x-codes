@@ -2,10 +2,19 @@
 import express from "express";
 import router from "./routes.js";
 import "./db.js";
+import cors from "cors"
 
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({extended : true}))
+// app.use(cors({
+    
+//   "origin": "http://localhost/5300",
+//   "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+//   "preflightContinue": false,
+//   "optionsSuccessStatus": 204
+
+// }))
 
 // await connection.query(`
 //     CREATE DATABASE student_management;
@@ -32,7 +41,7 @@ app.use(express.urlencoded({extended : true}))
 
 
 app.use("/user/v1/", router)
-app.use("/user/v1",router )
+
 
 app.listen(4000, ()=>{
     console.log("server running ");
