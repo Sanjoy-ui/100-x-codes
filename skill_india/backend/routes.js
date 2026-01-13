@@ -1,6 +1,7 @@
 import { Router } from "express";
 import connection from "./db.js";
 import { Result } from "postcss";
+import jwt from "jsonwebtoken"
 
 const router = Router()
 
@@ -10,8 +11,9 @@ const registerUser = async (req, res) => {
         const { username, email, age, address } = req.body;
         const sql = `INSERT INTO student (username, email, age, address) VALUES (?, ?, ?, ?)`;
         await connection.query(sql, [username, email, age, address]);
+        const token = jwt.sign({email} , "hshhduihdischsbdvbbvbi" , {expiresIn : "7d"})
         console.log("register route");
-        res.status(200).send({ message: "user created" });
+        res.status(200).send({ message: "user created" , token } );
     } catch (err) {
         console.log(err);
         res.status(500).send({ message: "internal database error" });
@@ -67,10 +69,29 @@ const deleteUser = async (req,res) => {
     }
 }
 
+// auth middleware 
+
+const authMiddleware = async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) return res.status(401).json({ message: "token missing" })
+        const token = authHeader.split(" ")[1];
+        if (!token) return res.status(401).json({ message: "token missing" })
+        const decode = jwt.verify(token, "hshhduihdischsbdvbbvbi")
+        req.user = decode;
+        next()
+    } catch (error) {
+        return res.status(401).json({ message: "invalid token" })
+    }
+}
+
+
+
+
  // "email": "rahul@test.com"
 router.route("/signup").post(registerUser)
 router.route("/login").get(userLogin)
-router.route("/update/:id").put(updateUser)
+router.route("/update/:id").put( authMiddleware, updateUser)
 router.route("/delete/:id").delete(deleteUser)
 // router.route("/signup").post(middleware ,(req,res)=>{
 

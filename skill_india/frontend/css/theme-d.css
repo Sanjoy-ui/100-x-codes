@@ -1,0 +1,121 @@
+/**
+ * Theme D - Fade Transition
+ * Smooth crossfade between images
+ * Caption fades in with slight scale effect
+ */
+
+/* Slide transitions */
+body.theme-d .slide {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.95);
+    transition: transform var(--slide-transition-duration) ease,
+                opacity var(--slide-transition-duration) ease,
+                visibility var(--slide-transition-duration) ease;
+}
+
+body.theme-d .slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+body.theme-d .slide.entering {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    animation: fadeScaleIn var(--slide-transition-duration) ease forwards;
+}
+
+body.theme-d .slide.exiting {
+    opacity: 0;
+    visibility: visible;
+    animation: fadeScaleOut var(--slide-transition-duration) ease forwards;
+}
+
+/* Keyframes for fade in with scale */
+@keyframes fadeScaleIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Keyframes for fade out with scale */
+@keyframes fadeScaleOut {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.05);
+    }
+}
+
+/* Same animation for reverse (fade doesn't have direction) */
+body.theme-d .slide.entering-reverse {
+    animation: fadeScaleIn var(--slide-transition-duration) ease forwards;
+}
+
+body.theme-d .slide.exiting-reverse {
+    animation: fadeScaleOut var(--slide-transition-duration) ease forwards;
+}
+
+/* Caption - Fade with scale effect */
+body.theme-d .caption-container {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.9);
+    transition: transform var(--slide-transition-duration) ease,
+                opacity var(--slide-transition-duration) ease,
+                visibility var(--slide-transition-duration) ease;
+    transition-delay: 200ms;
+}
+
+body.theme-d .caption-container.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+/* Caption animation */
+body.theme-d .caption-container.animating {
+    animation: captionFadeIn var(--slide-transition-duration) ease 200ms forwards;
+}
+
+@keyframes captionFadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Image with subtle zoom on hover */
+body.theme-d .slide-image {
+    transition: transform var(--transition-slow) ease,
+                filter var(--transition-slow) ease;
+}
+
+body.theme-d .slide-image:hover {
+    transform: scale(1.03);
+}
+
+/* Add a subtle blur effect during transition */
+body.theme-d .slide.exiting .slide-image {
+    filter: blur(2px);
+}
+
+/* Progress bar glow effect for Theme D */
+body.theme-d .progress-fill {
+    box-shadow: 0 0 10px var(--color-primary),
+                0 0 5px var(--color-primary);
+}

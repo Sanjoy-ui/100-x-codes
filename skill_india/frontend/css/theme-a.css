@@ -1,0 +1,44 @@
+/**
+ * Theme A - Direct Display
+ * No animation, images appear instantly
+ */
+
+/* Theme A is active when body has theme-a class */
+body.theme-a .slide {
+    opacity: 0;
+    visibility: hidden;
+    transition: none;
+}
+
+body.theme-a .slide.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+body.theme-a .slide.entering {
+    opacity: 1;
+    visibility: visible;
+}
+
+body.theme-a .slide.exiting {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Caption - No animation */
+body.theme-a .caption-container {
+    opacity: 0;
+    visibility: hidden;
+    transition: none;
+}
+
+body.theme-a .caption-container.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Image - No animation */
+body.theme-a .slide-image {
+    transform: none;
+    transition: none;
+}

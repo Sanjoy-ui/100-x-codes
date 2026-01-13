@@ -1,0 +1,131 @@
+/**
+ * Theme B - Horizontal Slide
+ * Image slides from left → center → right
+ * Caption follows with 300ms delay
+ */
+
+/* Slide transitions */
+body.theme-b .slide {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-100%);
+    transition: transform var(--slide-transition-duration) ease,
+                opacity var(--slide-transition-duration) ease,
+                visibility var(--slide-transition-duration) ease;
+}
+
+body.theme-b .slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+body.theme-b .slide.entering {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+    animation: slideInFromLeft var(--slide-transition-duration) ease forwards;
+}
+
+body.theme-b .slide.exiting {
+    opacity: 0;
+    visibility: visible;
+    animation: slideOutToRight var(--slide-transition-duration) ease forwards;
+}
+
+/* Keyframes for entering */
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Keyframes for exiting */
+@keyframes slideOutToRight {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Reverse animation (for previous) */
+body.theme-b .slide.entering-reverse {
+    animation: slideInFromRight var(--slide-transition-duration) ease forwards;
+}
+
+body.theme-b .slide.exiting-reverse {
+    animation: slideOutToLeft var(--slide-transition-duration) ease forwards;
+}
+
+@keyframes slideInFromRight {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutToLeft {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+/* Caption - Follows with 300ms delay */
+body.theme-b .caption-container {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50px);
+    transition: transform var(--slide-transition-duration) ease,
+                opacity var(--slide-transition-duration) ease,
+                visibility var(--slide-transition-duration) ease;
+    transition-delay: 300ms;
+}
+
+body.theme-b .caption-container.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+/* Caption animation */
+body.theme-b .caption-container.animating {
+    animation: captionSlideIn var(--slide-transition-duration) ease 300ms forwards;
+}
+
+@keyframes captionSlideIn {
+    0% {
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Image hover effect */
+body.theme-b .slide-image {
+    transition: transform var(--transition-normal) ease;
+}
+
+body.theme-b .slide-image:hover {
+    transform: scale(1.02);
+}

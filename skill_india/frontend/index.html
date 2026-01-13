@@ -1,11 +1,201 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Photo Slideshow | WorldSkills</title>
+    
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="css/base.css">
+    
+    <!-- Theme Styles -->
+    <link rel="stylesheet" href="css/theme-a.css" id="theme-a-css">
+    <link rel="stylesheet" href="css/theme-b.css" id="theme-b-css">
+    <link rel="stylesheet" href="css/theme-c.css" id="theme-c-css">
+    <link rel="stylesheet" href="css/theme-d.css" id="theme-d-css">
 </head>
 <body>
-    
+    <!-- Main Application Container -->
+    <div class="app-container">
+        
+        <!-- Header -->
+        <header class="app-header">
+            <h1 class="app-title">Photo Slideshow</h1>
+            <div class="header-controls">
+                <button class="btn btn-icon" id="toggle-theme-mode" aria-label="Toggle dark/light mode">
+                    <span class="icon-sun">☀️</span>
+                    <span class="icon-moon">🌙</span>
+                </button>
+                <button class="btn btn-secondary" id="toggle-config" aria-label="Open configuration panel">
+                    ⚙️ Settings
+                </button>
+                <span class="keyboard-hint">Press <kbd>Ctrl</kbd>+<kbd>K</kbd> or <kbd>/</kbd> for commands</span>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            
+            <!-- Slideshow Container -->
+            <section class="slideshow-container" id="slideshow-container">
+                
+                <!-- Drop Zone (visible when no images) -->
+                <div class="drop-zone" id="drop-zone">
+                    <div class="drop-zone-content">
+                        <span class="drop-icon">📷</span>
+                        <h2>Drop Images Here</h2>
+                        <p>or click to select files</p>
+                        <input type="file" id="file-input" multiple accept="image/*" hidden>
+                        <button class="btn btn-primary" id="load-samples">Load Sample Photos</button>
+                    </div>
+                </div>
+
+                <!-- Slideshow Display -->
+                <div class="slideshow-display" id="slideshow-display" hidden>
+                    <!-- Image Container -->
+                    <div class="slide-wrapper">
+                        <div class="slide active" id="current-slide">
+                            <img src="" alt="" class="slide-image" id="slide-image">
+                        </div>
+                    </div>
+                    
+                    <!-- Caption -->
+                    <div class="caption-container" id="caption-container">
+                        <p class="caption-text" id="caption-text"></p>
+                    </div>
+
+                    <!-- Slide Counter -->
+                    <div class="slide-counter" id="slide-counter">
+                        <span id="current-index">1</span> / <span id="total-slides">1</span>
+                    </div>
+
+                    <!-- Navigation Arrows -->
+                    <button class="nav-btn nav-prev" id="nav-prev" aria-label="Previous slide">❮</button>
+                    <button class="nav-btn nav-next" id="nav-next" aria-label="Next slide">❯</button>
+
+                    <!-- Playback Controls -->
+                    <div class="playback-controls" id="playback-controls">
+                        <button class="btn btn-icon" id="btn-play" aria-label="Play slideshow">▶️</button>
+                        <button class="btn btn-icon" id="btn-pause" aria-label="Pause slideshow" hidden>⏸️</button>
+                    </div>
+                </div>
+
+                <!-- Progress Bar (for auto-play) -->
+                <div class="progress-bar" id="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </section>
+
+            <!-- Thumbnail Strip -->
+            <section class="thumbnail-strip" id="thumbnail-strip" hidden>
+                <div class="thumbnails-container" id="thumbnails-container">
+                    <!-- Thumbnails will be dynamically generated -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Configuration Panel (Sidebar) -->
+        <aside class="config-panel" id="config-panel" hidden>
+            <div class="config-header">
+                <h2>Configuration</h2>
+                <button class="btn btn-icon" id="close-config" aria-label="Close configuration">✕</button>
+            </div>
+
+            <div class="config-content">
+                <!-- Slideshow Mode -->
+                <div class="config-section">
+                    <h3>Slideshow Mode</h3>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="slideshow-mode" value="manual" checked>
+                            <span>Manual (Arrow Keys)</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="slideshow-mode" value="auto">
+                            <span>Auto-Play</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="slideshow-mode" value="random">
+                            <span>Random</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Theme Selection -->
+                <div class="config-section">
+                    <h3>Theme</h3>
+                    <div class="theme-buttons">
+                        <button class="btn theme-btn active" data-theme="theme-a">A - Direct</button>
+                        <button class="btn theme-btn" data-theme="theme-b">B - Horizontal</button>
+                        <button class="btn theme-btn" data-theme="theme-c">C - Vertical</button>
+                        <button class="btn theme-btn" data-theme="theme-d">D - Fade</button>
+                    </div>
+                </div>
+
+                <!-- Slide Duration -->
+                <div class="config-section">
+                    <h3>Slide Duration: <span id="duration-value">5</span>s</h3>
+                    <input type="range" id="slide-duration" min="1" max="30" value="5" class="range-slider">
+                </div>
+
+                <!-- Transition Speed -->
+                <div class="config-section">
+                    <h3>Transition Speed: <span id="transition-value">500</span>ms</h3>
+                    <input type="range" id="transition-speed" min="100" max="2000" step="100" value="500" class="range-slider">
+                </div>
+
+                <!-- Photo Management -->
+                <div class="config-section">
+                    <h3>Photo Management</h3>
+                    <div class="button-group">
+                        <button class="btn btn-secondary" id="shuffle-photos">🔀 Shuffle</button>
+                        <button class="btn btn-secondary" id="clear-photos">🗑️ Clear All</button>
+                    </div>
+                </div>
+
+                <!-- Photo List (Drag & Drop Ordering) -->
+                <div class="config-section">
+                    <h3>Photo Order (Drag to Reorder)</h3>
+                    <ul class="photo-list" id="photo-list">
+                        <!-- Photo items will be dynamically generated -->
+                    </ul>
+                </div>
+
+                <!-- Caption Editor -->
+                <div class="config-section">
+                    <h3>Edit Caption</h3>
+                    <div class="caption-editor">
+                        <select id="caption-photo-select" class="select-input">
+                            <option value="">Select a photo...</option>
+                        </select>
+                        <input type="text" id="caption-input" class="text-input" placeholder="Enter custom caption">
+                        <button class="btn btn-primary" id="save-caption">Save Caption</button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Command Bar Modal -->
+        <div class="command-bar-overlay" id="command-bar-overlay" hidden>
+            <div class="command-bar" id="command-bar">
+                <div class="command-bar-header">
+                    <span class="command-icon">🔍</span>
+                    <input type="text" id="command-input" placeholder="Type a command..." autocomplete="off">
+                    <kbd class="command-esc">ESC</kbd>
+                </div>
+                <ul class="command-list" id="command-list">
+                    <!-- Commands will be dynamically generated -->
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Modules -->
+    <script src="js/storage.js"></script>
+    <script src="js/themes.js"></script>
+    <script src="js/slideshow.js"></script>
+    <script src="js/commandBar.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
