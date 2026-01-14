@@ -44,7 +44,7 @@ int main(){
     cout << "Array after insertion : ";
     for (int i = 0; i < n; i++)
     {
-        cout << array[i] << "\n";
+       // cout << array[i] << "\n";
     }
     
     
